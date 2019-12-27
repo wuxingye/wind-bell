@@ -24,8 +24,10 @@ public class ShortLinkFilter extends BaseLinkFilter {
 	public String handle(BaseLinkFilter next, String path, String url) {
 
 		if (StringUtils.startsWith(url, RuleConstant.SHORT_ADDR_LINK)) {
-			// 双斜杠开头，不予处理
-			return new StringBuffer(LinkUtils.extractProtocol(url)).append(url).toString();
+			// 双斜杠开头
+			// 提取出协议
+			String protocol = LinkUtils.extractProtocol(path);
+			return null == protocol ? null : new StringBuffer(protocol).append(":").append(url).toString();
 		}
 		return next.handle(path, url);
 	}
