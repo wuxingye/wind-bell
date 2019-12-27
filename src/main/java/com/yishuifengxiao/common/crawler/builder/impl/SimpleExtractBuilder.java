@@ -23,10 +23,11 @@ import com.yishuifengxiao.common.crawler.link.LinkExtractDecorator;
 import com.yishuifengxiao.common.crawler.link.LinkExtractProxy;
 import com.yishuifengxiao.common.crawler.link.filter.BaseLinkFilter;
 import com.yishuifengxiao.common.crawler.link.filter.impl.AbsoluteLinkFilter;
+import com.yishuifengxiao.common.crawler.link.filter.impl.HashLinkFilter;
 import com.yishuifengxiao.common.crawler.link.filter.impl.HttpLinkFilter;
 import com.yishuifengxiao.common.crawler.link.filter.impl.IllegalLinkFilter;
-import com.yishuifengxiao.common.crawler.link.filter.impl.NotLinkFilter;
 import com.yishuifengxiao.common.crawler.link.filter.impl.RelativeLinkFilter;
+import com.yishuifengxiao.common.crawler.link.filter.impl.ShortLinkFilter;
 
 /**
  * 简单的解析器构造者
@@ -125,10 +126,11 @@ public class SimpleExtractBuilder implements ExtractBuilder {
 	 */
 	private BaseLinkFilter createLinkFilter() {
 		RelativeLinkFilter relativeLinkFilter = new RelativeLinkFilter(null);
-		AbsoluteLinkFilter absoluteLinkFilter = new AbsoluteLinkFilter(relativeLinkFilter);
+		HashLinkFilter hashLinkFilter=new HashLinkFilter(relativeLinkFilter);
+		AbsoluteLinkFilter absoluteLinkFilter = new AbsoluteLinkFilter(hashLinkFilter);
 		HttpLinkFilter httpLinkFilter = new HttpLinkFilter(absoluteLinkFilter);
-		NotLinkFilter notLinkFilter = new NotLinkFilter(httpLinkFilter);
-		IllegalLinkFilter illegalLinkFilter = new IllegalLinkFilter(notLinkFilter);
+		ShortLinkFilter shortLinkFilter = new ShortLinkFilter(httpLinkFilter);
+		IllegalLinkFilter illegalLinkFilter = new IllegalLinkFilter(shortLinkFilter);
 		return illegalLinkFilter;
 	}
 

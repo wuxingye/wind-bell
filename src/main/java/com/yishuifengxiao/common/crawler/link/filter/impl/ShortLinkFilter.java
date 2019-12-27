@@ -7,26 +7,25 @@ import com.yishuifengxiao.common.crawler.link.filter.BaseLinkFilter;
 import com.yishuifengxiao.common.crawler.utils.LinkUtils;
 
 /**
- * 绝对地址链接过滤器<br/>
- * 处理绝对地址链接
+ * 短链接链接过滤器<br/>
+ * 处理以双斜杠开头的链接
  * 
  * @author yishui
  * @version 1.0.0
  * @date 2019/11/20
  */
-public class AbsoluteLinkFilter extends BaseLinkFilter {
+public class ShortLinkFilter extends BaseLinkFilter {
 
-	public AbsoluteLinkFilter(BaseLinkFilter next) {
+	public ShortLinkFilter(BaseLinkFilter next) {
 		super(next);
 	}
 
 	@Override
 	public String handle(BaseLinkFilter next, String path, String url) {
 
-		if (StringUtils.startsWith(url, RuleConstant.ABSOLUTE_ADDR_LINK)) {
-			// 绝对地址
-			// 保证地址的形式为 / 开头，而不是//开头
-			return new StringBuffer(LinkUtils.extractProtocolAndHost(path)).append(url).toString();
+		if (StringUtils.startsWith(url, RuleConstant.SHORT_ADDR_LINK)) {
+			// 双斜杠开头，不予处理
+			return new StringBuffer(LinkUtils.extractProtocol(url)).append(url).toString();
 		}
 		return next.handle(path, url);
 	}

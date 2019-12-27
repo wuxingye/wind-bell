@@ -17,5 +17,5 @@ public interface StatuObserver {
      * @param task 任务
      * @param statu 变化之后的状态
      */
-	void update(Task task,Statu statu);
+	void update(final Task task,final Statu statu);
 }

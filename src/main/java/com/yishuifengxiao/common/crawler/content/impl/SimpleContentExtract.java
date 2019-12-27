@@ -23,7 +23,7 @@ public class SimpleContentExtract implements ContentExtract {
 	private List<ContentExtractor> contentExtractors;
 
 	@Override
-	public void extract(Page page) throws ServiceException {
+	public void extract(final Page page) throws ServiceException {
 		// 提取出所有属性数据
 		Map<String, Object> data = this.extractContent(page.getRawTxt());
 		// 设置输出数据

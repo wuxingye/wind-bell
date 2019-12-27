@@ -32,7 +32,7 @@ public abstract class BaseContentExtractDecorator implements ContentExtract {
 	protected ContentExtract contentExtract;
 
 	@Override
-	public void extract(Page page) throws ServiceException {
+	public void extract(final Page page) throws ServiceException {
 
 		if (null != page && HttpStatus.SC_OK == page.getCode()) {
 			// 判断是否符合内容页规则

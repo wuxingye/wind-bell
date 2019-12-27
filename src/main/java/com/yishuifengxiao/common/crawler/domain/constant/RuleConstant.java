@@ -62,5 +62,9 @@ public final class RuleConstant {
      * 非法表达式的匹配规则
      */
 	public final static String ILLEGAL_LINKS_SUFFIX = ".+\\.((gif)|(png)|(css)|(js)|(jpg)|(jpeg)|(ico)|(svg)|(woff2)|(exe)|(zip))+";
-
+	
+	/**
+	 * 哈希链接地址的标志
+	 */
+	public final static String HASH_ADDR="#";
 }

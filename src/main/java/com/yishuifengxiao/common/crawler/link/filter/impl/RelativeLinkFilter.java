@@ -7,7 +7,7 @@ import com.yishuifengxiao.common.crawler.domain.constant.RuleConstant;
 import com.yishuifengxiao.common.crawler.link.filter.BaseLinkFilter;
 
 /**
- * 相对地址链接处理器
+ * 相对地址链接过滤器
  * 
  * @author yishui
  * @version 1.0.0
@@ -21,7 +21,7 @@ public class RelativeLinkFilter extends BaseLinkFilter {
 	}
 
 	@Override
-	public String handle(String path, String url) {
+	public String handle(BaseLinkFilter next, String path, String url) {
 
 		if (!StringUtils.startsWithAny(url, RuleConstant.ABSOLUTE_ADDR_LINK, RuleConstant.NETWORK_ADDR_LINK)) {
 
@@ -33,7 +33,7 @@ public class RelativeLinkFilter extends BaseLinkFilter {
 			return sb.append(url).toString();
 
 		}
-		return this.next != null ? this.next.handle(path, url) : null;
+		return next.handle(path, url);
 	}
 
 }

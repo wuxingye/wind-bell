@@ -52,9 +52,9 @@ public class CrawlerRule implements Serializable {
 	protected Long waitTime = SiteConstant.WAIT_TIME_FOR_CLOSE;
 
 	/**
-	 * 内容解析时使用到的线程数，默认为2
+	 * 内容解析时使用到的线程数，默认值为 主机CPU的核心数
 	 */
-	@ApiModelProperty("解析时线程数，内容解析时使用到的线程数，默认为2")
+	@ApiModelProperty("解析时线程数，内容解析时使用到的线程数，默认值为 主机CPU的核心数")
 	protected Integer threadNum = SiteConstant.DEFAULT_THREAD_NUM;
 
 	/**

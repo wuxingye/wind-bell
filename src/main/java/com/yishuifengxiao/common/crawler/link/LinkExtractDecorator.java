@@ -41,7 +41,7 @@ public class LinkExtractDecorator implements LinkExtract {
 	private List<LinkExtractor> linkExtractors;
 
 	@Override
-	public void extract(Page page) throws ServiceException {
+	public void extract(final Page page) throws ServiceException {
 		//@formatter:off 
 		// 调用实际处理类对信息进行处理
 		this.linkExtractProxy.extract(page);
@@ -53,7 +53,7 @@ public class LinkExtractDecorator implements LinkExtract {
 
 		//将提取出来的链接根据链接提取规则过滤
 	   List<String>	urls=this.fliter(StringUtils.isNotBlank(page.getRedirectUrl())? page.getRedirectUrl():  page.getUrl(),new HashSet<>(page.getLinks()));
-		page.setLinks(urls);
+	   page.setLinks(urls);
 		//@formatter:on  
 	}
 
@@ -67,10 +67,12 @@ public class LinkExtractDecorator implements LinkExtract {
 	private List<String> fliter(final String path, Set<String> urls) {
 		//@formatter:off 
 		// 链接统一转换成网络地址形式
-		Set<String> links = urls.parallelStream().filter(t -> null!=t).map(t -> linkFilter.handle(path, t.toLowerCase())).collect(Collectors.toSet());
+		Set<String> links = urls.parallelStream().filter(t -> null != t)
+				.map(t -> linkFilter.handle(path, t.toLowerCase())).collect(Collectors.toSet());
 		urls.clear();
-		linkExtractors.parallelStream().map(t -> t.extract(new ArrayList<>(links))).forEach(urls::addAll);
-
+		// 再从转换后的地址里提取出所有符合要求的链接
+		linkExtractors.parallelStream().filter(t -> null != t).map(t -> t.extract(new ArrayList<>(links)))
+				.forEach(urls::addAll);
 		//@formatter:on  
 		return urls.parallelStream().filter(t -> StringUtils.isNotBlank(t)).collect(Collectors.toList());
 	}

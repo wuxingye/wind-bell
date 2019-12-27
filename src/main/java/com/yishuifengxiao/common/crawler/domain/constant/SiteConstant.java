@@ -20,9 +20,9 @@ public final class SiteConstant {
 	public final static long REQUEST_INTERVAL_TIME = 10000L;
 
 	/**
-	 * 默认使用的线程数,默认值为 2
+	 * 默认使用的线程数,默认值为 主机CPU的核心数
 	 */
-	public final static int DEFAULT_THREAD_NUM = 2;
+	public final static int DEFAULT_THREAD_NUM = Runtime.getRuntime().availableProcessors();
 	/**
 	 * 连续多长时间没有新的求表明任务已经完成，单位为毫秒,默认值为300000毫秒(300秒)
 	 */
