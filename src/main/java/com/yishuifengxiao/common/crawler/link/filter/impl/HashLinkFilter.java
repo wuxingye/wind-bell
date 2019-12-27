@@ -23,6 +23,7 @@ public class HashLinkFilter extends BaseLinkFilter {
 	@Override
 	protected String handle(BaseLinkFilter next, String path, String url) {
 		if (StringUtils.startsWith(url, RuleConstant.HASH_ADDR)) {
+			//哈希地址
 			return null;
 		}
 		return next.handle(path, url);

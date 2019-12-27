@@ -22,7 +22,7 @@ public class HttpLinkFilter extends BaseLinkFilter {
 	public String handle(BaseLinkFilter next, String path, String url) {
 
 		if (LinkUtils.matchHttpRequest(url)) {
-			// 绝对地址
+			// 网络地址
 
 			return url;
 		}
