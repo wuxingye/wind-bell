@@ -19,5 +19,5 @@ public interface ContentExtract {
 	 * @param page
 	 * @throws ServiceException
 	 */
-	void extract(Page page) throws ServiceException;
+	void extract(final Page page) throws ServiceException;
 }
