@@ -231,3 +231,5 @@ crawler.start();
  **文档地址** :[https://gitee.com/zhiyubujian/wind-bell/wikis/pages](https://gitee.com/zhiyubujian/wind-bell/wikis/pages)
 
  **API文档** ：[https://apidoc.gitee.com/zhiyubujian/wind-bell/](https://apidoc.gitee.com/zhiyubujian/wind-bell/)
+
+ **官方文档** ：[http://doc.yishuifengxiao.com/windbell/](http://doc.yishuifengxiao.com/windbell/)
