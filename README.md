@@ -15,7 +15,7 @@
 <dependency>
     <groupId>com.yishuifengxiao.common</groupId>
     <artifactId>crawler</artifactId>
-    <version>替换为最新的版本号</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
@@ -54,7 +54,7 @@
                 //风铃虫可以设置多个提取项，这里为了演示只设置了一个提取项
                 .addExtractItem(contentItem) //增加一个提取项
                 //如果不设置则使用默认时间10秒，此值是为了防止抓取频率太高被服务器封杀
-                .interval(3)//每次进行爬取时的平均间隔时间，单位为秒，
+                .interval(3000)//每次进行爬取时的平均间隔时间，单位为毫秒，
                 .creatCrawler();
         //启动爬虫实例
         crawler.start();
@@ -126,6 +126,19 @@
 5. EDAG浏览器
 6. safari浏览器(windows版、MAC版)
 8. ...
+
+
+ **抓取js渲染网站** 
+
+核心代码如下：
+
+
+```
+  Crawler crawler = ...
+          crawler .setDownloader(new SeleniumDownloader("C:\\Users\\yishui\\Desktop\\geckodriver\\win32.exe",3000L))
+```
+
+
 
 **分布式支持**
 
