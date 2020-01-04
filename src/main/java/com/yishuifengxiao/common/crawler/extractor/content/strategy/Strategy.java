@@ -8,6 +8,7 @@ package com.yishuifengxiao.common.crawler.extractor.content.strategy;
  * @date 2019-11-7
  */
 public interface Strategy {
+
     /**
      * 根据规则提取输入字符里的数据
      *

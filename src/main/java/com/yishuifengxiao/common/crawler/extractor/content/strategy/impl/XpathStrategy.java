@@ -1,15 +1,13 @@
 package com.yishuifengxiao.common.crawler.extractor.content.strategy.impl;
 
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-import org.jsoup.Jsoup;
-
 import com.yishuifengxiao.common.crawler.domain.constant.CrawlerConstant;
 import com.yishuifengxiao.common.crawler.extractor.content.strategy.Strategy;
-
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
 import us.codecraft.xsoup.Xsoup;
+
+import java.util.List;
 
 /**
  * XPATH提取
@@ -20,19 +18,19 @@ import us.codecraft.xsoup.Xsoup;
  */
 @Slf4j
 public class XpathStrategy implements Strategy {
+
     @Override
     public String extract(String input, String param1, String param2) {
         if (!StringUtils.isNoneBlank(input, param1)) {
             return "";
         }
-
         try {
             List<String> list = Xsoup.compile(param1).evaluate(Jsoup.parse(input)).list();
-            return String.join(CrawlerConstant.SEPARATOR,list);
+            return String.join(CrawlerConstant.SEPARATOR, list);
         } catch (Exception e) {
-            log.info("使用【XPATH规则】 提取 {} 时出现问题，提取参数为 param1= {} ,param2 = {},问题为 {}", input, param1, param2, e.getMessage());
+            log.info("使用【XPATH规则】 提取 {} 时出现问题，提取参数为 param1= {} ,param2 = {},问题为 {}", input, param1, param2,
+                e.getMessage());
         }
-
         return "";
     }
 }

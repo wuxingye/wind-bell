@@ -8,8 +8,8 @@ package com.yishuifengxiao.common.crawler.extractor.content.strategy.impl;
  * @date 2019-11-7
  */
 public class EmailStrategy extends RegexStrategy {
-    private final static String REGEX = "\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";
 
+    private final static String REGEX = "\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";
 
     @Override
     public String extract(String input, String param1, String param2) {
