@@ -7,7 +7,7 @@ package com.yishuifengxiao.common.crawler.domain.eunm;
  * @version 1.0.0
  * @date 2019年11月20日
  */
-public enum Statu {
+public enum Status {
     /**
      * 已停止
      */

@@ -6,7 +6,6 @@ import com.yishuifengxiao.common.crawler.domain.entity.Page;
 import com.yishuifengxiao.common.crawler.domain.eunm.Rule;
 import com.yishuifengxiao.common.crawler.extractor.content.strategy.Strategy;
 import com.yishuifengxiao.common.crawler.extractor.content.strategy.StrategyFactory;
-import com.yishuifengxiao.common.tool.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -29,7 +28,7 @@ public class LinkExtractProxy implements LinkExtract {
     private Strategy strategy = StrategyFactory.get(Rule.XPATH);
 
     @Override
-    public synchronized void extract(final Page page) throws ServiceException {
+    public synchronized void extract(final Page page) {
         // 先提取出所有的链接
         List<String> urls = this.extractAllLinks(page.getRawTxt());
         // 将超链接放入目标里备用
@@ -39,16 +38,15 @@ public class LinkExtractProxy implements LinkExtract {
     /**
      * 提取出所有的超链接
      *
-     * @param rawtxt 原始文本
+     * @param rawTxt 原始文本
      * @return
      */
-    private List<String> extractAllLinks(String rawtxt) {
+    private List<String> extractAllLinks(String rawTxt) {
         //@formatter:off
         try {
-            String extract = strategy.extract(rawtxt, RuleConstant.XPATH_ALL_LINK, null);
+            String extract = strategy.extract(rawTxt, RuleConstant.XPATH_ALL_LINK, null);
             if (StringUtils.isNotBlank(extract)) {
-                String[] tokens = StringUtils.splitByWholeSeparatorPreserveAllTokens(extract,
-                        CrawlerConstant.SEPARATOR);
+                String[] tokens = StringUtils.splitByWholeSeparatorPreserveAllTokens(extract, CrawlerConstant.SEPARATOR);
                 if (tokens != null && tokens.length > 0) {
                     return Arrays.asList(tokens);
                 }

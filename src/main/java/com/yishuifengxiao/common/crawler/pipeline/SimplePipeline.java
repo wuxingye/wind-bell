@@ -17,9 +17,7 @@ public class SimplePipeline implements Pipeline {
     private final static String SEPARATOR = System.getProperty("line.separator");
 
     @Override
-    public void recieve(ResultData resultData) {
-        log.debug(SEPARATOR);
-        log.info("{} request : {} , out data : {} {}", SEPARATOR, resultData.getUrl(), resultData.getAllData(),
-            SEPARATOR);
+    public void receive(ResultData resultData) {
+        log.info("{} request: {} , out data: {} {}", SEPARATOR, resultData.getUrl(), resultData.getData(), SEPARATOR);
     }
 }

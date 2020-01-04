@@ -40,28 +40,34 @@ public class CrawlerRule implements Serializable {
      * 防止因频繁请求而导致服务器封杀，该值必须不小于0，若该值为0表示不开启此功能<br/>
      * 默认为10000 毫秒(10秒)
      */
-    @ApiModelProperty("请求的间隔时间，单位为毫秒,默认为10000 毫秒(10秒),请求间隔时间为0到该值得两倍之间的一个随机数") protected Long interval =
-        SiteConstant.REQUEST_INTERVAL_TIME;
+    @ApiModelProperty("请求的间隔时间，单位为毫秒,默认为10000 毫秒(10秒),请求间隔时间为0到该值得两倍之间的一个随机数")
+    protected Long interval = SiteConstant.REQUEST_INTERVAL_TIME;
     /**
      * 超时等待时间，单位为秒,默认为300000毫秒(300秒),连续间隔多长时间后没有新的请求任务表明此任务已经结束
      */
-    @ApiModelProperty("超时等待时间，单位为毫秒,默认为300000毫秒(300秒),连续间隔多长时间后没有新的请求任务表明此任务已经结束") protected Long waitTime =
-        SiteConstant.WAIT_TIME_FOR_CLOSE;
+    @ApiModelProperty("超时等待时间，单位为毫秒,默认为300000毫秒(300秒),连续间隔多长时间后没有新的请求任务表明此任务已经结束")
+    protected Long waitTime = SiteConstant.WAIT_TIME_FOR_CLOSE;
     /**
      * 内容解析时使用到的线程数，默认值为 主机CPU的核心数
      */
-    @ApiModelProperty("解析时线程数，内容解析时使用到的线程数，默认值为 主机CPU的核心数") protected Integer threadNum =
-        SiteConstant.DEFAULT_THREAD_NUM;
+    @ApiModelProperty("解析时线程数，内容解析时使用到的线程数，默认值为 主机CPU的核心数")
+    protected Integer threadNum = SiteConstant.DEFAULT_THREAD_NUM;
     /**
      * 站点规则信息
      */
-    @ApiModelProperty("站点规则信息") @Valid private SiteRule site;
+    @ApiModelProperty("站点规则信息")
+    @Valid
+    private SiteRule site;
     /**
      * 风铃虫的链接处理规则
      */
-    @ApiModelProperty("链接处理规则信息") @Valid private LinkRule link;
+    @ApiModelProperty("链接处理规则信息")
+    @Valid
+    private LinkRule link;
     /**
      * 内容处理规则信息
      */
-    @ApiModelProperty("内容处理规则信息") @Valid private ContentRule content;
+    @ApiModelProperty("内容处理规则信息")
+    @Valid
+    private ContentRule content;
 }

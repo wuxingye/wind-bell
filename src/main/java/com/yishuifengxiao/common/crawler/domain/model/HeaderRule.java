@@ -22,8 +22,12 @@ import javax.validation.constraints.Pattern;
 @Accessors(chain = true)
 public class HeaderRule {
 
-    @ApiModelProperty("请求头的名字") @NotBlank(message = "请求头的名字不能为空")
-    @Pattern(regexp = "^[A-Za-z0-9_-]+$", message = "请求头的名字必须是数字或字母") private String headerName;
-    @ApiModelProperty("请求头的值") @NotBlank(message = "请求头的值不能为空")
-    @Pattern(regexp = "^[A-Za-z0-9_-/,]+$", message = "请求头的值必须是数字或字母") private String headerValue;
+    @ApiModelProperty("请求头的名字")
+    @NotBlank(message = "请求头的名字不能为空")
+    @Pattern(regexp = "^[A-Za-z0-9_-]+$", message = "请求头的名字必须是数字或字母")
+    private String headerName;
+    @ApiModelProperty("请求头的值")
+    @NotBlank(message = "请求头的值不能为空")
+    @Pattern(regexp = "^[A-Za-z0-9_-/,]+$", message = "请求头的值必须是数字或字母")
+    private String headerValue;
 }

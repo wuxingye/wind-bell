@@ -16,20 +16,20 @@ public class InMemoryRequestCache implements RequestCache {
 
     @Override
     public synchronized void save(String cacheName, String value) {
-        if (null != value) {
+        if (value != null) {
             cacheSet.add(value);
         }
     }
 
     @Override
     public boolean lookAndCache(String cacheName, String value) {
-        boolean extis = this.exist(cacheName, value);
+        boolean exist = this.exist(cacheName, value);
         this.save(cacheName, value);
-        return extis;
+        return exist;
     }
 
     @Override
-    public boolean exist(String cacheName, String value) {
+    public Boolean exist(String cacheName, String value) {
         return this.cacheSet.contains(value);
     }
 
@@ -39,7 +39,7 @@ public class InMemoryRequestCache implements RequestCache {
     }
 
     @Override
-    public long getCount(String cacheName) {
-        return this.cacheSet.size();
+    public Long getCount(String cacheName) {
+        return (long) this.cacheSet.size();
     }
 }

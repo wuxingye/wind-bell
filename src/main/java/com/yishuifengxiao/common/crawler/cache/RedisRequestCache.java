@@ -23,13 +23,13 @@ public class RedisRequestCache implements RequestCache {
 
     @Override
     public boolean lookAndCache(String cacheName, String value) {
-        boolean extis = this.exist(cacheName, value);
+        boolean exist = this.exist(cacheName, value);
         this.save(cacheName, value);
-        return extis;
+        return exist;
     }
 
     @Override
-    public boolean exist(String cacheName, String value) {
+    public Boolean exist(String cacheName, String value) {
         return this.getOps(cacheName).isMember(value);
     }
 
@@ -39,7 +39,7 @@ public class RedisRequestCache implements RequestCache {
     }
 
     @Override
-    public long getCount(String cacheName) {
+    public Long getCount(String cacheName) {
         return this.getOps(cacheName).size();
     }
 

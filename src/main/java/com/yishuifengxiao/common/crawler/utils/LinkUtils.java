@@ -129,8 +129,8 @@ public class LinkUtils {
     public static String extractProtocol(String url) {
         Matcher matcher = PATTERN_PROTOCOL_AND_HOST.matcher(url);
         if (matcher.find()) {
-            String protocolAndDomian = matcher.group();
-            return StringUtils.substringBefore(protocolAndDomian, ":");
+            String protocolAndDomain = matcher.group();
+            return StringUtils.substringBefore(protocolAndDomain, ":");
         }
         return null;
     }

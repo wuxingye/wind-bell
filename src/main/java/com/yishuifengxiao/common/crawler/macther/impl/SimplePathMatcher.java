@@ -23,9 +23,6 @@ public class SimplePathMatcher implements PathMatcher {
             return true;
         }
         // 判断当前网页是否符合内容提取页的提取提取规则
-        if (RegexFactory.match(pattern, url)) {
-            return true;
-        }
-        return false;
+        return RegexFactory.match(pattern, url);
     }
 }

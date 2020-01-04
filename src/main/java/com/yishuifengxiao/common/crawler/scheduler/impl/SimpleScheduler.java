@@ -2,6 +2,7 @@ package com.yishuifengxiao.common.crawler.scheduler.impl;
 
 import com.yishuifengxiao.common.crawler.scheduler.Scheduler;
 
+import java.util.Collections;
 import java.util.Queue;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -20,9 +21,7 @@ public class SimpleScheduler implements Scheduler {
     @Override
     public synchronized void push(String... urls) {
         if (null != urls) {
-            for (String url : urls) {
-                queue.add(url);
-            }
+            Collections.addAll(queue, urls);
         }
     }
 

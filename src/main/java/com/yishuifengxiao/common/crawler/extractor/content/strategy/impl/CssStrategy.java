@@ -2,12 +2,11 @@ package com.yishuifengxiao.common.crawler.extractor.content.strategy.impl;
 
 import com.yishuifengxiao.common.crawler.domain.constant.CrawlerConstant;
 import com.yishuifengxiao.common.crawler.extractor.content.strategy.Strategy;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +19,8 @@ import java.util.List;
  * @version 1.0.0
  * @date 2019-11-7
  */
+@Slf4j
 public class CssStrategy implements Strategy {
-
-    private final static Logger log = LoggerFactory.getLogger(CssStrategy.class);
 
     @Override
     public String extract(String input, String param1, String param2) {
@@ -45,8 +43,8 @@ public class CssStrategy implements Strategy {
             });
         } catch (Exception e) {
             log.info("使用【css规则】 提取 {} 时出现问题，提取参数为 param1= {} ,param2 = {},问题为 {}", input, param1, param2,
-                e.getMessage());
+                    e.getMessage());
         }
-        return out == null ? "" : String.join(CrawlerConstant.SEPARATOR, out);
+        return String.join(CrawlerConstant.SEPARATOR, out);
     }
 }

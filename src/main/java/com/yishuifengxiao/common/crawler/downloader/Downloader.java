@@ -2,7 +2,6 @@ package com.yishuifengxiao.common.crawler.downloader;
 
 import com.yishuifengxiao.common.crawler.domain.entity.Page;
 import com.yishuifengxiao.common.crawler.domain.model.SiteRule;
-import com.yishuifengxiao.common.tool.exception.ServiceException;
 
 /**
  * 网页下载器
@@ -19,9 +18,9 @@ public interface Downloader {
      * @param siteRule 站点规则信息
      * @param url      需要下载的网页的地址
      * @return
-     * @throws ServiceException
+     * @throws Exception
      */
-    Page down(final SiteRule siteRule, final String url) throws ServiceException;
+    Page down(final SiteRule siteRule, final String url) throws Exception;
 
     /**
      * 关闭下载器以释放资源

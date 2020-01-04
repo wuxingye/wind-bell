@@ -24,15 +24,15 @@ public class ArrayStrategy implements Strategy {
         if (!StringUtils.isNoneBlank(input, param2)) {
             return "";
         }
-        int index = NumberUtils.isCreatable(param2) ? Integer.valueOf(param2) : 0;
+        int index = NumberUtils.isCreatable(param2) ? Integer.parseInt(param2) : 0;
         if (index < MIN_INDEX) {
             index = MIN_INDEX;
         }
-        String[] strs = StringUtils
-            .splitPreserveAllTokens(input, StringUtils.isNotBlank(param1) ? param1 : CrawlerConstant.SEPARATOR);
-        if (index > strs.length) {
+        String[] strings = StringUtils
+                .splitPreserveAllTokens(input, StringUtils.isNotBlank(param1) ? param1 : CrawlerConstant.SEPARATOR);
+        if (index > strings.length) {
             return "";
         }
-        return strs[index - 1];
+        return strings[index - 1];
     }
 }

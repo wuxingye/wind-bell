@@ -5,17 +5,16 @@ import com.yishuifengxiao.common.crawler.builder.impl.SimpleExtractBuilder;
 import com.yishuifengxiao.common.crawler.content.ContentExtract;
 import com.yishuifengxiao.common.crawler.domain.entity.Page;
 import com.yishuifengxiao.common.crawler.domain.entity.ResultData;
-import com.yishuifengxiao.common.crawler.domain.eunm.Statu;
+import com.yishuifengxiao.common.crawler.domain.eunm.Status;
 import com.yishuifengxiao.common.crawler.downloader.Downloader;
 import com.yishuifengxiao.common.crawler.link.LinkExtract;
 import com.yishuifengxiao.common.crawler.listener.CrawlerListener;
-import com.yishuifengxiao.common.crawler.monitor.StatuObserver;
+import com.yishuifengxiao.common.crawler.monitor.StatusObserver;
 import com.yishuifengxiao.common.crawler.pipeline.Pipeline;
 import com.yishuifengxiao.common.crawler.pool.SimpleThreadFactory;
 import com.yishuifengxiao.common.crawler.scheduler.Scheduler;
 import com.yishuifengxiao.common.crawler.utils.LocalCrawler;
 import com.yishuifengxiao.common.crawler.utils.RegexFactory;
-import com.yishuifengxiao.common.tool.exception.ServiceException;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -66,7 +65,7 @@ public class CrawlerProcessor extends Thread {
     /**
      * 状态观察者
      */
-    private final StatuObserver statuObserver;
+    private final StatusObserver statusObserver;
     private final ReentrantLock newUrlLock = new ReentrantLock();
     private final Condition newUrlCondition = newUrlLock.newCondition();
     /**
@@ -102,10 +101,10 @@ public class CrawlerProcessor extends Thread {
      */
     private ContentExtract contentExtract;
 
-    public CrawlerProcessor(Task task, StatuObserver statuObserver, Downloader downloader, Scheduler scheduler,
-        ThreadPoolExecutor threadPool, LinkExtract linkExtract, ContentExtract contentExtract, Pipeline pipeline,
-        CrawlerListener crawlerListener) {
-        this.statuObserver = statuObserver;
+    public CrawlerProcessor(Task task, StatusObserver statusObserver, Downloader downloader, Scheduler scheduler,
+                            ThreadPoolExecutor threadPool, LinkExtract linkExtract, ContentExtract contentExtract, Pipeline pipeline,
+                            CrawlerListener crawlerListener) {
+        this.statusObserver = statusObserver;
         this.task = task;
         this.downloader = downloader;
         this.scheduler = scheduler;
@@ -126,17 +125,17 @@ public class CrawlerProcessor extends Thread {
         this.linkExtract = extractBuilder.createLinkExtract(this.task.getCrawlerRule().getLink(), this.linkExtract);
         // 生成内容解析器
         this.contentExtract =
-            extractBuilder.createContentExtract(this.task.getCrawlerRule().getContent(), this.contentExtract);
+                extractBuilder.createContentExtract(this.task.getCrawlerRule().getContent(), this.contentExtract);
         // 生成线程池
         if (this.threadPool == null) {
             this.threadPool = new ThreadPoolExecutor(this.task.getCrawlerRule().getThreadNum(),
-                this.task.getCrawlerRule().getThreadNum() * 2, 300L, TimeUnit.SECONDS,
-                new LinkedBlockingDeque<Runnable>(), new SimpleThreadFactory(this.task.getName()),
-                new ThreadPoolExecutor.CallerRunsPolicy());
+                    this.task.getCrawlerRule().getThreadNum() * 2, 300L, TimeUnit.SECONDS,
+                    new LinkedBlockingDeque<Runnable>(), new SimpleThreadFactory(this.task.getName()),
+                    new ThreadPoolExecutor.CallerRunsPolicy());
         }
         // 注入起始链接
         this.scheduler.push(StringUtils
-            .splitByWholeSeparatorPreserveAllTokens(this.task.getCrawlerRule().getLink().getStartUrl(), ","));
+                .splitByWholeSeparatorPreserveAllTokens(this.task.getCrawlerRule().getLink().getStartUrl(), ","));
     }
 
     @Override
@@ -152,7 +151,7 @@ public class CrawlerProcessor extends Thread {
             }
             // 先休眠一段时间
             long sleepSeconds = this.sleep();
-            if (this.task.getStatu() == Statu.STOP) {
+            if (this.task.getStatus() == Status.STOP) {
                 // 风铃虫处于停止状态
                 // 如果风铃虫被手动停止就中断线程
                 break;
@@ -161,7 +160,7 @@ public class CrawlerProcessor extends Thread {
             String url = this.scheduler.poll();
             log.debug("The new processing request for the crawler instance {} is {}", this.task.getName(), url);
             if (StringUtils.isBlank(url)) {
-                this.crawlerListener.onNullRquest(this.task);
+                this.crawlerListener.onNullRequest(this.task);
                 // 再次等待一段时间
                 this.waitNewUrl(sleepSeconds);
                 this.stat.addAndGet(sleepSeconds * 2);
@@ -185,8 +184,8 @@ public class CrawlerProcessor extends Thread {
         if (this.interceptCount.get() > this.task.getCrawlerRule().getSite().getInterceptCount()) {
             // 连续多次检测到失败的标志，表示一倍服务器封锁
             log.info(
-                "The crawler instance {} has been blocked by the target server, and the crawler instance is automatically tentatively run.",
-                this.task.getName());
+                    "The crawler instance {} has been blocked by the target server, and the crawler instance is automatically tentatively run.",
+                    this.task.getName());
             this.interceptCount.set(0);
             this.crawlerListener.exitOnBlock(this.task);
             return true;
@@ -194,7 +193,7 @@ public class CrawlerProcessor extends Thread {
         if (this.stat.get() > this.task.getCrawlerRule().getWaitTime()) {
             // 连续请求时间，超过指定的阀值还没有获取到新的请求，表明风铃虫的爬取任务已经完成
             log.info("The crawler instance {} has not received a new task for a long time and will automatically stop",
-                this.task.getName());
+                    this.task.getName());
             this.stat.set(0);
             this.crawlerListener.exitOnFinish(this.task);
             return true;
@@ -215,8 +214,7 @@ public class CrawlerProcessor extends Thread {
                 // 下载下载后的page信息里包含request信息
                 page = downloader.down(task.getCrawlerRule().getSite(), url);
                 if (page == null) {
-                    throw new ServiceException(
-                        new StringBuffer("Web page (").append(url).append(" ) download results are empty").toString());
+                    throw new Exception("Web page (" + url + " ) download results are empty");
                 }
                 // 补全URL信息
                 page.setUrl(url);
@@ -248,7 +246,7 @@ public class CrawlerProcessor extends Thread {
             if (match) {
                 interceptCount.incrementAndGet();
                 log.debug("The crawler instance {} was detected by the server for the {} time", task.getName(),
-                    interceptCount.get());
+                        interceptCount.get());
             } else {
                 // 重置
                 interceptCount.set(0);
@@ -294,15 +292,14 @@ public class CrawlerProcessor extends Thread {
      *
      * @param pipeline 数据输出器
      * @param page     解析后的数据信息
-     * @throws ServiceException
      */
-    private void output(final Pipeline pipeline, final Page page) throws ServiceException {
+    private void output(final Pipeline pipeline, final Page page) {
         // 输出数据
         if (!page.isSkip()) {
             // 输出数据
-            ResultData resultData = new ResultData().setData(page.getAllResultItem()).setUrl(page.getUrl())
-                .setRedirectUrl(page.getRedirectUrl()).setTask(task);
-            pipeline.recieve(resultData);
+            ResultData resultData = new ResultData().setData(page.getOutData()).setUrl(page.getUrl())
+                    .setRedirectUrl(page.getRedirectUrl()).setTask(task);
+            pipeline.receive(resultData);
         }
     }
 
@@ -402,12 +399,13 @@ public class CrawlerProcessor extends Thread {
         public void run() {
             while (true) {
                 /*
-                 * <pre> 两种情况下认为风铃虫任务已经完成 <br/> 1. 任务处理器中线程池中的活跃线程数为0且任务管理器线程处于非活跃状态 <br/> 2.
-                 * 风铃虫的状态为停止状态 </pre>
+                 * 两种情况下认为风铃虫任务已经完成
+                 * 1. 任务处理器中线程池中的活跃线程数为0且任务管理器线程处于非活跃状态
+                 * 2. 风铃虫的状态为停止状态
                  */
                 if ((!CrawlerProcessor.this.isActive())) {
-                    CrawlerProcessor.this.statuObserver.update(CrawlerProcessor.this.task, Statu.STOP);
-                    log.info("风铃虫 {} 的状态变为 {}", CrawlerProcessor.this.task.getName(), Statu.STOP);
+                    CrawlerProcessor.this.statusObserver.update(CrawlerProcessor.this.task, Status.STOP);
+                    log.info("风铃虫 {} 的状态变为 {}", CrawlerProcessor.this.task.getName(), Status.STOP);
                     break;
                 }
                 try {

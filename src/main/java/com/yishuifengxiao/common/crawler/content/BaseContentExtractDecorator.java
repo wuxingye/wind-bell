@@ -1,7 +1,6 @@
 package com.yishuifengxiao.common.crawler.content;
 
 import com.yishuifengxiao.common.crawler.domain.entity.Page;
-import com.yishuifengxiao.common.tool.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
 
@@ -34,7 +33,7 @@ public abstract class BaseContentExtractDecorator implements ContentExtract {
     }
 
     @Override
-    public void extract(final Page page) throws ServiceException {
+    public void extract(final Page page) throws Exception {
         if (null != page && HttpStatus.SC_OK == page.getCode()) {
             // 判断是否符合内容页规则
             boolean match = this.matchContentExtractRule(this.contentExtractRules, page.getUrl());

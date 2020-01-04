@@ -16,5 +16,5 @@ public interface Pipeline {
      *
      * @param resultData 风铃虫的输出数据
      */
-    void recieve(final ResultData resultData);
+    void receive(final ResultData resultData);
 }

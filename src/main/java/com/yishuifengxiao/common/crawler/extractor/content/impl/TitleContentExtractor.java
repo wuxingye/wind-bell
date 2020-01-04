@@ -19,8 +19,7 @@ public class TitleContentExtractor implements ContentExtractor {
 
     @Override
     public Object extract(String rawText) {
-        String extract = StrategyFactory.get(Rule.XPATH).extract(rawText, XPATH_STR, "");
-        return extract;
+        return StrategyFactory.get(Rule.XPATH).extract(rawText, XPATH_STR, "");
     }
 
     @Override

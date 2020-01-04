@@ -38,7 +38,7 @@ public interface RequestCache {
      * @param value     需要存储的值
      * @return 如果存在则返回为true，否则为fasle
      */
-    boolean exist(String cacheName, String value);
+    Boolean exist(String cacheName, String value);
 
     /**
      * 移除指定的缓存集合
@@ -53,5 +53,5 @@ public interface RequestCache {
      * @param cacheName 缓存集合的名字
      * @return
      */
-    long getCount(String cacheName);
+    Long getCount(String cacheName);
 }

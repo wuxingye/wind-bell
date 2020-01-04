@@ -3,10 +3,10 @@ package com.yishuifengxiao.common.crawler.content.impl;
 import com.yishuifengxiao.common.crawler.content.ContentExtract;
 import com.yishuifengxiao.common.crawler.domain.entity.Page;
 import com.yishuifengxiao.common.crawler.extractor.content.ContentExtractor;
-import com.yishuifengxiao.common.tool.exception.ServiceException;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.WeakHashMap;
 
 /**
@@ -27,7 +27,7 @@ public class SimpleContentExtract implements ContentExtract {
     }
 
     @Override
-    public void extract(final Page page) throws ServiceException {
+    public void extract(final Page page) throws Exception {
         // 提取出所有属性数据
         Map<String, Object> data = this.extractContent(page.getRawTxt());
         // 设置输出数据
@@ -43,9 +43,7 @@ public class SimpleContentExtract implements ContentExtract {
     private Map<String, Object> extractContent(String rawText) {
         Map<String, Object> map = new WeakHashMap<>();
         // 调用内容抽取器进行抽取
-        this.contentExtractors.parallelStream().filter(t -> t != null).forEach(t -> {
-            map.put(t.getName(), t.extract(rawText));
-        });
+        this.contentExtractors.parallelStream().filter(Objects::nonNull).forEach(t -> map.put(t.getName(), t.extract(rawText)));
         return map;
     }
 }

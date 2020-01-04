@@ -28,8 +28,7 @@ public class XpathStrategy implements Strategy {
             List<String> list = Xsoup.compile(param1).evaluate(Jsoup.parse(input)).list();
             return String.join(CrawlerConstant.SEPARATOR, list);
         } catch (Exception e) {
-            log.info("使用【XPATH规则】 提取 {} 时出现问题，提取参数为 param1= {} ,param2 = {},问题为 {}", input, param1, param2,
-                e.getMessage());
+            log.info("使用【XPATH规则】 提取 {} 时出现问题，提取参数为 param1= {} ,param2 = {},问题为 {}", input, param1, param2, e.getMessage());
         }
         return "";
     }

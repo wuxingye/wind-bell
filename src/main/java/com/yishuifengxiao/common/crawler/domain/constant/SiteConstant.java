@@ -65,15 +65,15 @@ public final class SiteConstant {
     /**
      * 浏览器标识符集合
      */
-    public static final String[] USER_AGENT_ARRAY = new String[] {UserAgentConstant.USER_AGENT_GOOGLE_VERSION_78_0,
-        UserAgentConstant.USER_AGENT_GOOGLE_VERSION_75_0, UserAgentConstant.USER_AGENT_FIREFOX_VERSION_70_0,
-        UserAgentConstant.USER_AGENT_FIREFOX_VERSION_MAC, UserAgentConstant.USER_AGENT_IE_VERSION_11_476,
-        UserAgentConstant.USER_AGENT_IE_VERSION_9_0, UserAgentConstant.USER_AGENT_EDAG_VERSION_11_476,
-        UserAgentConstant.USER_AGENT_SAFARI_VERSION_MAC, UserAgentConstant.USER_AGENT_SAFARI_VERSION_WINDOWS,
-        UserAgentConstant.USER_AGENT_OPERA_VERSION_WINDOWS, UserAgentConstant.USER_AGENT_OPERA_VERSION_MAC,
-        UserAgentConstant.USER_AGENT_WORLD_VERSION_WINDOWS, UserAgentConstant.USER_AGENT_360_VERSION_WINDOWS,
-        UserAgentConstant.USER_AGENT_LBBROWSER_VERSION_WINDOWS, UserAgentConstant.USER_AGENT_AVANT_VERSION_WINDOWS,
-        UserAgentConstant.USER_AGENT_GREEN_VERSION_WINDOWS, UserAgentConstant.USER_AGENT_QQTT_VERSION_WINDOWS,
-        UserAgentConstant.USER_AGENT_QQ_VERSION_WINDOWS, UserAgentConstant.USER_AGENT_SOUGOU_VERSION_WINDOWS,
-        UserAgentConstant.USER_AGENT_AOYOU_VERSION_WINDOWS, UserAgentConstant.USER_AGENT_UC_VERSION_WINDOWS};
+    public static final String[] USER_AGENT_ARRAY = new String[]{UserAgentConstant.USER_AGENT_GOOGLE_VERSION_78_0,
+            UserAgentConstant.USER_AGENT_GOOGLE_VERSION_75_0, UserAgentConstant.USER_AGENT_FIREFOX_VERSION_70_0,
+            UserAgentConstant.USER_AGENT_FIREFOX_VERSION_MAC, UserAgentConstant.USER_AGENT_IE_VERSION_11_476,
+            UserAgentConstant.USER_AGENT_IE_VERSION_9_0, UserAgentConstant.USER_AGENT_EDAG_VERSION_11_476,
+            UserAgentConstant.USER_AGENT_SAFARI_VERSION_MAC, UserAgentConstant.USER_AGENT_SAFARI_VERSION_WINDOWS,
+            UserAgentConstant.USER_AGENT_OPERA_VERSION_WINDOWS, UserAgentConstant.USER_AGENT_OPERA_VERSION_MAC,
+            UserAgentConstant.USER_AGENT_WORLD_VERSION_WINDOWS, UserAgentConstant.USER_AGENT_360_VERSION_WINDOWS,
+            UserAgentConstant.USER_AGENT_LBBROWSER_VERSION_WINDOWS, UserAgentConstant.USER_AGENT_AVANT_VERSION_WINDOWS,
+            UserAgentConstant.USER_AGENT_GREEN_VERSION_WINDOWS, UserAgentConstant.USER_AGENT_QQTT_VERSION_WINDOWS,
+            UserAgentConstant.USER_AGENT_QQ_VERSION_WINDOWS, UserAgentConstant.USER_AGENT_SOUGOU_VERSION_WINDOWS,
+            UserAgentConstant.USER_AGENT_AOYOU_VERSION_WINDOWS, UserAgentConstant.USER_AGENT_UC_VERSION_WINDOWS};
 }

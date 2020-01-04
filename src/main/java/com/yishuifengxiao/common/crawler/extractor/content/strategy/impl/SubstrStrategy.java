@@ -22,8 +22,8 @@ public class SubstrStrategy implements Strategy {
             return "";
         }
         try {
-            int start = Integer.valueOf(param1);
-            int end = Integer.valueOf(param2);
+            int start = Integer.parseInt(param1);
+            int end = Integer.parseInt(param2);
             if (start > 0 && end > 0 && end > start) {
                 return StringUtils.substring(input, start, end);
             }

@@ -31,17 +31,21 @@ public class FieldExtractRule implements Serializable {
     /**
      * 内容处理策略，直接获取、CSS提取、XPATH提取，正则提取,替换内容，移除内容
      */
-    @ApiModelProperty("内容处理策略，直接获取、CSS提取、XPATH提取，正则提取,替换内容，移除内容") private Rule rule;
+    @ApiModelProperty("内容处理策略，直接获取、CSS提取、XPATH提取，正则提取,替换内容，移除内容")
+    private Rule rule;
     /**
      * 第一个参数
      */
-    @ApiModelProperty("第一个参数") private String param1;
+    @ApiModelProperty("第一个参数")
+    private String param1;
     /**
      * 第二个参数，部分规则下生效（如替换时作为替换目标）
      */
-    @ApiModelProperty("第二个参数，部分规则下生效（如替换时作为替换目标）") private String param2;
+    @ApiModelProperty("第二个参数，部分规则下生效（如替换时作为替换目标）")
+    private String param2;
     /**
      * 下一个处理规则
      */
-    @ApiModelProperty("处理序号") private Integer sort = 0;
+    @ApiModelProperty("处理序号")
+    private Integer sort = 0;
 }

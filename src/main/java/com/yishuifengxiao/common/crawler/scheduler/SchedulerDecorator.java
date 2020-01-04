@@ -5,6 +5,7 @@ import com.yishuifengxiao.common.crawler.domain.constant.CrawlerConstant;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * 资源调度器装饰者<br/>
@@ -37,11 +38,11 @@ public class SchedulerDecorator implements Scheduler {
     @Override
     public void push(String... urls) {
         if (urls != null) {
-            Arrays.asList(urls).parallelStream().filter(t -> t != null).filter(t -> needStore(t)).forEach(t -> {
+            Arrays.asList(urls).parallelStream().filter(Objects::nonNull).filter(this::needStore).forEach(t -> {
                 // 存储到待抓取集合中
                 this.scheduler.push(t);
                 // 存储在历史记录集之中
-                this.requestCache.save(CrawlerConstant.REQUEST_HOSTORY + this.getName(), t);
+                this.requestCache.save(CrawlerConstant.REQUEST_HISTORY + this.getName(), t);
             });
         }
     }
@@ -57,7 +58,7 @@ public class SchedulerDecorator implements Scheduler {
             return false;
         }
         // 在历史链接记录集不存在时才处理
-        return !requestCache.exist(CrawlerConstant.REQUEST_HOSTORY + this.getName(), url);
+        return !requestCache.exist(CrawlerConstant.REQUEST_HISTORY + this.getName(), url);
     }
 
     @Override

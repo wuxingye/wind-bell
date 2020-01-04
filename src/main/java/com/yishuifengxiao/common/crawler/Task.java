@@ -1,7 +1,7 @@
 package com.yishuifengxiao.common.crawler;
 
 import com.yishuifengxiao.common.crawler.domain.entity.CrawlerRule;
-import com.yishuifengxiao.common.crawler.domain.eunm.Statu;
+import com.yishuifengxiao.common.crawler.domain.eunm.Status;
 
 import java.time.LocalDateTime;
 
@@ -26,7 +26,7 @@ public interface Task {
      *
      * @return
      */
-    Statu getStatu();
+    Status getStatus();
 
     /**
      * 获取任务的定义规则

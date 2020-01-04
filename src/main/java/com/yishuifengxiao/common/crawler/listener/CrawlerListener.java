@@ -17,7 +17,7 @@ public interface CrawlerListener {
      *
      * @param task 当前任务信息
      */
-    void onNullRquest(final Task task);
+    void onNullRequest(final Task task);
 
     /**
      * 下载页面失败的消息

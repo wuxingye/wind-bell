@@ -3,7 +3,6 @@ package com.yishuifengxiao.common.crawler.downloader.impl;
 import com.yishuifengxiao.common.crawler.domain.entity.Page;
 import com.yishuifengxiao.common.crawler.domain.model.SiteRule;
 import com.yishuifengxiao.common.crawler.downloader.BaseDownloader;
-import com.yishuifengxiao.common.tool.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
 import org.openqa.selenium.Cookie;
@@ -39,15 +38,15 @@ public class SeleniumDownloader extends BaseDownloader {
      *
      * @param driverPath 浏览器驱动文件geckodriver的地址
      * @param waitRender 等待一段时间，以便在下载需要前端渲染的网站时让浏览器有时间完成前端渲染，单位为毫秒，如果此值不大于0表示不开启此功能
-     * @throws ServiceException 创建浏览器对象时出现的问题
+     * @throws Exception 创建浏览器对象时出现的问题
      */
-    public SeleniumDownloader(String driverPath, long waitRender) throws ServiceException {
+    public SeleniumDownloader(String driverPath, long waitRender) throws Exception {
         super(driverPath);
         this.waitRender = waitRender;
     }
 
     @Override
-    public Page down(WebDriver driver, String url) throws ServiceException {
+    public Page down(WebDriver driver, String url) throws Exception {
         Page page = new Page(url);
         try {
             driver.get(url);
@@ -85,7 +84,7 @@ public class SeleniumDownloader extends BaseDownloader {
                 // 识别对象时的超时时间。过了这个时间如果对象还没找到的话就会抛出NoSuchElement异常。单位毫秒。
                 driver.manage().timeouts().implicitlyWait(siteRule.getConnectTimeout(), TimeUnit.MILLISECONDS);
             }
-            siteRule.getCookiValues().forEach((k, v) -> {
+            siteRule.getCookieValues().forEach((k, v) -> {
                 driver.manage().addCookie(new Cookie(k, v));
             });
             hasDone = true;

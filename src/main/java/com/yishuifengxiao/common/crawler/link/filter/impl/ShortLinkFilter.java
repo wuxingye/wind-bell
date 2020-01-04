@@ -25,7 +25,7 @@ public class ShortLinkFilter extends BaseLinkFilter {
             // 双斜杠开头
             // 提取出协议
             String protocol = LinkUtils.extractProtocol(path);
-            return null == protocol ? null : new StringBuffer(protocol).append(":").append(url).toString();
+            return null == protocol ? null : protocol + ":" + url;
         }
         return next.handle(path, url);
     }

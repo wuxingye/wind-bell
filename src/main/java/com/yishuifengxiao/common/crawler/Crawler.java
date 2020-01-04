@@ -5,7 +5,7 @@ import com.yishuifengxiao.common.crawler.cache.RequestCache;
 import com.yishuifengxiao.common.crawler.content.ContentExtract;
 import com.yishuifengxiao.common.crawler.domain.entity.CrawlerRule;
 import com.yishuifengxiao.common.crawler.domain.entity.SimulatorData;
-import com.yishuifengxiao.common.crawler.domain.eunm.Statu;
+import com.yishuifengxiao.common.crawler.domain.eunm.Status;
 import com.yishuifengxiao.common.crawler.domain.model.ContentItem;
 import com.yishuifengxiao.common.crawler.domain.model.LinkRule;
 import com.yishuifengxiao.common.crawler.domain.model.SiteRule;
@@ -14,8 +14,8 @@ import com.yishuifengxiao.common.crawler.downloader.impl.SimpleDownloader;
 import com.yishuifengxiao.common.crawler.link.LinkExtract;
 import com.yishuifengxiao.common.crawler.listener.CrawlerListener;
 import com.yishuifengxiao.common.crawler.listener.SimpleCrawlerListener;
-import com.yishuifengxiao.common.crawler.monitor.SimpleStatuObserver;
-import com.yishuifengxiao.common.crawler.monitor.StatuObserver;
+import com.yishuifengxiao.common.crawler.monitor.SimpleStatusObserver;
+import com.yishuifengxiao.common.crawler.monitor.StatusObserver;
 import com.yishuifengxiao.common.crawler.pipeline.Pipeline;
 import com.yishuifengxiao.common.crawler.pipeline.SimplePipeline;
 import com.yishuifengxiao.common.crawler.scheduler.Scheduler;
@@ -36,13 +36,13 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @version 1.0.0
  * @date 2019年11月20日
  */
-public class Crawler implements Task, StatuObserver {
+public class Crawler implements Task, StatusObserver {
 
     private final static Logger log = LoggerFactory.getLogger(Crawler.class);
     /**
      * 风铃虫的状态：运行中、停止、暂停
      */
-    protected Statu statu;
+    protected Status status;
     /**
      * 风铃虫的启动时间
      */
@@ -90,7 +90,7 @@ public class Crawler implements Task, StatuObserver {
     /**
      * 风铃虫状态观察者
      */
-    private StatuObserver statuObserver;
+    private StatusObserver statuObserver;
 
     private Crawler() {
     }
@@ -131,7 +131,7 @@ public class Crawler implements Task, StatuObserver {
      * @param contentExtractRule 内容提取规则
      * @return
      */
-    public final static SimulatorData testContent(String url, SiteRule siteRule, ContentItem contentExtractRule) {
+    public static SimulatorData testContent(String url, SiteRule siteRule, ContentItem contentExtractRule) {
         return new SimpleSimulator().extract(url, siteRule, contentExtractRule, null);
     }
 
@@ -145,8 +145,8 @@ public class Crawler implements Task, StatuObserver {
      * @param downloader         网页下载器
      * @return
      */
-    public final static SimulatorData testContent(String url, SiteRule siteRule, ContentItem contentExtractRule,
-        Downloader downloader) {
+    public static SimulatorData testContent(String url, SiteRule siteRule, ContentItem contentExtractRule,
+                                            Downloader downloader) {
         return new SimpleSimulator().extract(url, siteRule, contentExtractRule, downloader);
     }
 
@@ -158,7 +158,7 @@ public class Crawler implements Task, StatuObserver {
      * @param linkRule 链接提取规则
      * @return
      */
-    public final static SimulatorData testLink(SiteRule siteRule, LinkRule linkRule) {
+    public static SimulatorData testLink(SiteRule siteRule, LinkRule linkRule) {
         return new SimpleSimulator().link(siteRule, linkRule, null);
     }
 
@@ -171,7 +171,7 @@ public class Crawler implements Task, StatuObserver {
      * @param downloader 网页下载器
      * @return
      */
-    public final static SimulatorData testLink(SiteRule siteRule, LinkRule linkRule, Downloader downloader) {
+    public static SimulatorData testLink(SiteRule siteRule, LinkRule linkRule, Downloader downloader) {
         return new SimpleSimulator().link(siteRule, linkRule, downloader);
     }
 
@@ -181,11 +181,11 @@ public class Crawler implements Task, StatuObserver {
     public void start() {
         // 组件初始化
         this.initComponents();
-        if (statu != Statu.RUNNING) {
-            this.statu = Statu.RUNNING;
+        if (status != Status.RUNNING) {
+            this.status = Status.RUNNING;
             this.startTime = LocalDateTime.now();
             this.processor.start();
-            this.statuChange();
+            this.statusChange();
         }
     }
 
@@ -193,9 +193,9 @@ public class Crawler implements Task, StatuObserver {
      * 停止运行<br/>
      */
     public void stop() {
-        statu = Statu.STOP;
+        status = Status.STOP;
         log.info("The crawler instance {} has been manually stopped", this.getName());
-        this.statuChange();
+        this.statusChange();
     }
 
     /**
@@ -216,15 +216,15 @@ public class Crawler implements Task, StatuObserver {
      * @return
      */
     public boolean isRun() {
-        return this.statu == Statu.RUNNING;
+        return this.status == Status.RUNNING;
     }
 
     /**
      * 通知观察着状态已经发生变化
      */
-    private void statuChange() {
+    private void statusChange() {
         if (this.statuObserver != null) {
-            this.statuObserver.update(this, this.statu);
+            this.statuObserver.update(this, this.status);
         }
     }
 
@@ -244,18 +244,18 @@ public class Crawler implements Task, StatuObserver {
         }
         // 资源调度器
         this.scheduler =
-            new SchedulerDecorator(this.requestCache, this.scheduler == null ? new SimpleScheduler() : this.scheduler);
+                new SchedulerDecorator(this.requestCache, this.scheduler == null ? new SimpleScheduler() : this.scheduler);
         if (this.crawlerListener == null) {
             this.crawlerListener = new SimpleCrawlerListener();
         }
         if (this.statuObserver == null) {
             // 添加一个风铃虫状态观察者
-            this.statuObserver = new SimpleStatuObserver();
+            this.statuObserver = new SimpleStatusObserver();
         }
         if (this.processor == null) {
             this.processor =
-                new CrawlerProcessor(this, this, this.downloader, this.scheduler, this.threadPool, this.linkExtract,
-                    this.contentExtract, this.pipeline, this.crawlerListener);
+                    new CrawlerProcessor(this, this, this.downloader, this.scheduler, this.threadPool, this.linkExtract,
+                            this.contentExtract, this.pipeline, this.crawlerListener);
         }
     }
 
@@ -427,7 +427,7 @@ public class Crawler implements Task, StatuObserver {
      *
      * @return
      */
-    public StatuObserver getStatuObserver() {
+    public StatusObserver getStatuObserver() {
         return this.statuObserver;
     }
 
@@ -437,7 +437,7 @@ public class Crawler implements Task, StatuObserver {
      * @param statuObserver 状态监听器
      * @return
      */
-    public Crawler setStatuObserver(StatuObserver statuObserver) {
+    public Crawler setStatuObserver(StatusObserver statuObserver) {
         Assert.notNull(statuObserver, "状态观察者不能为空");
         this.statuObserver = statuObserver;
         return this;
@@ -496,24 +496,21 @@ public class Crawler implements Task, StatuObserver {
      * 获取风铃虫的状态
      */
     @Override
-    public Statu getStatu() {
-        return this.statu;
+    public Status getStatus() {
+        return this.status;
     }
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Crawler [name=").append(this.getName()).append(",scheduler=").append(scheduler.getName())
-            .append("]");
-        return builder.toString();
+        return "Crawler [name=" + this.getName() + ",scheduler=" + scheduler.getName() + "]";
     }
 
     @Override
-    public void update(Task task, Statu statu) {
-        this.statu = statu;
-        this.statuChange();
+    public void update(Task task, Status status) {
+        this.status = status;
+        this.statusChange();
         // 实例停止运行时关闭下载器，释放资源
-        if (Statu.STOP == statu) {
+        if (Status.STOP == status) {
             this.downloader.close();
         }
     }

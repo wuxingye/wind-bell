@@ -14,10 +14,7 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.WeakHashMap;
+import java.util.*;
 
 /**
  * 站点规则信息
@@ -42,42 +39,51 @@ public class SiteRule implements Serializable {
     /**
      * 浏览器标志，默认值为空，表示系统从众多内置标识符中随机选择一个
      */
-    @ApiModelProperty("浏览器标志，默认值为空，表示系统从众多内置标识符中随机选择一个") private String userAgent;
+    @ApiModelProperty("浏览器标志，默认值为空，表示系统从众多内置标识符中随机选择一个")
+    private String userAgent;
     /**
      * 用于指明当前流量的来源参考页面，默认为空，表示系统设置为当前请求的网页值
      */
-    @ApiModelProperty("来源参考页，默认为空，表示系统设置为当前请求的网页值") private String referrer;
+    @ApiModelProperty("来源参考页，默认为空，表示系统设置为当前请求的网页值")
+    private String referrer;
     /**
      * 网页缓存策略，默认为 max-age=0
      */
-    @ApiModelProperty(" 网页缓存策略，默认为 max-age=0") private String cacheControl = SiteConstant.CACHE_CONTROL;
+    @ApiModelProperty(" 网页缓存策略，默认为 max-age=0")
+    private String cacheControl = SiteConstant.CACHE_CONTROL;
     /**
      * 请求的cookie，默认为空
      */
-    @ApiModelProperty("请求的cookie，默认为空") private String cookieValue;
+    @ApiModelProperty("请求的cookie，默认为空")
+    private String cookieValue;
     /**
      * 失败重试次数，请求失败时重新执行此请求的次数,默认为3
      */
-    @ApiModelProperty("失败重试次数,默认为3") private int retryCount = SiteConstant.RETRY_COUNT;
+    @ApiModelProperty("失败重试次数,默认为3")
+    private int retryCount = SiteConstant.RETRY_COUNT;
     /**
      * 封杀标志， 下载内容里包含此值时表示被服务器拦截，使用正则表达式，如果为空则不进行此校验
      */
-    @ApiModelProperty("封杀标志，使用正则表达式，如果为空则不进行此校验") private String failureMark;
+    @ApiModelProperty("封杀标志，使用正则表达式，如果为空则不进行此校验")
+    private String failureMark;
     /**
      * 封杀阀域值，连续多次在下载内容中获取到失败标识时的重试此次，超过此次数会关闭该风铃虫实例，默认为5
      */
-    @ApiModelProperty("连续多次在下载内容中获取到失败标识时的重试此次，超过此次数会关闭该风铃虫实例，默认为5") private Integer interceptCount =
-        SiteConstant.INTERCEPT_RETRY_COUNT;
+    @ApiModelProperty("连续多次在下载内容中获取到失败标识时的重试此次，超过此次数会关闭该风铃虫实例，默认为5")
+    private Integer interceptCount =
+            SiteConstant.INTERCEPT_RETRY_COUNT;
     /**
      * 确定用于HTTP状态管理的cookie规范的名称<br/>
      * 值参考 CookieSpecs ,默认为 null<br/>
      */
-    @ApiModelProperty("确定用于HTTP状态管理的cookie规范的名称") private String cookieSpec;
+    @ApiModelProperty("确定用于HTTP状态管理的cookie规范的名称")
+    private String cookieSpec;
     /**
      * 确定是否应自动处理重定向。 <br/>
      * <b>默认为true</b>
      */
-    @ApiModelProperty("确定是否应自动处理重定向，默认为true") private boolean redirectsEnabled = true;
+    @ApiModelProperty("确定是否应自动处理重定向，默认为true")
+    private boolean redirectsEnabled = true;
     /**
      * <pre>
      * 确定是否应拒绝相对重定向。
@@ -85,7 +91,8 @@ public class SiteRule implements Serializable {
      * <b>默认为false</b>
      * </pre>
      */
-    @ApiModelProperty(" 确定是否应拒绝相对重定向。 默认为false") private boolean relativeRedirectsAllowed = false;
+    @ApiModelProperty(" 确定是否应拒绝相对重定向。 默认为false")
+    private boolean relativeRedirectsAllowed = false;
     /**
      * <pre>
      * 确定是否应允许循环重定向（重定向到同一位置）。
@@ -93,12 +100,14 @@ public class SiteRule implements Serializable {
      * <b>默认为false</b>
      * </pre>
      */
-    @ApiModelProperty("确定是否应允许循环重定向，默认为false") private boolean circularRedirectsAllowed = false;
+    @ApiModelProperty("确定是否应允许循环重定向，默认为false")
+    private boolean circularRedirectsAllowed = false;
     /**
      * 返回要遵循的最大重定向数。 重定向次数的限制旨在防止无限循环 <br/>
      * <b>默认为50</b>
      */
-    @ApiModelProperty("最大重定向数，默认为50") private int maxRedirects = SiteConstant.MAX_REDIRECTS;
+    @ApiModelProperty("最大重定向数，默认为50")
+    private int maxRedirects = SiteConstant.MAX_REDIRECTS;
     /**
      * <pre>
      *
@@ -108,22 +117,26 @@ public class SiteRule implements Serializable {
      * <b>默认为-1</b>
      * </pre>
      */
-    @ApiModelProperty("确定连接建立之前的超时时间（以毫秒为单位），默认为-1") private int connectTimeout = -1;
+    @ApiModelProperty("确定连接建立之前的超时时间（以毫秒为单位），默认为-1")
+    private int connectTimeout = -1;
     /**
      * <pre>
      * 确定是否请求目标服务器压缩内容。
      * <b>默认为true</b>
      * </pre>
      */
-    @ApiModelProperty("是否请求目标服务器压缩内容。默认为true") private boolean contentCompressionEnabled = true;
+    @ApiModelProperty("是否请求目标服务器压缩内容。默认为true")
+    private boolean contentCompressionEnabled = true;
     /**
      * <pre>
      * 确定客户端是否应规范请求中的URI。
      *  <b>默认为true</b>
      * </pre>
      */
-    @ApiModelProperty("确定客户端是否应规范请求中的URI。默认为true") private boolean normalizeUri = true;
-    @ApiModelProperty("请求头信息") private List<HeaderRule> headers = new ArrayList<>();
+    @ApiModelProperty("确定客户端是否应规范请求中的URI。默认为true")
+    private boolean normalizeUri = true;
+    @ApiModelProperty("请求头信息")
+    private List<HeaderRule> headers = new ArrayList<>();
 
     /**
      * 获取到全部的cookie信息
@@ -132,11 +145,11 @@ public class SiteRule implements Serializable {
      */
     @ApiModelProperty(hidden = true)
     @JsonProperty(access = com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY)
-    public Map<String, String> getCookiValues() {
-        Map<String, String> map = new WeakHashMap<String, String>();
+    public Map<String, String> getCookieValues() {
+        Map<String, String> map = new WeakHashMap<>();
         if (StringUtils.isNotBlank(this.cookieValue)) {
-            String[] cookieStrs = StringUtils.splitByWholeSeparatorPreserveAllTokens(this.cookieValue, ";");
-            for (String cookieStr : cookieStrs) {
+            String[] cookieStrings = StringUtils.splitByWholeSeparatorPreserveAllTokens(this.cookieValue, ";");
+            for (String cookieStr : cookieStrings) {
                 if (StringUtils.contains(cookieStr, "=")) {
                     String[] data = StringUtils.splitByWholeSeparator(cookieStr, "=");
                     if (StringUtils.isNotBlank(data[0])) {
@@ -156,12 +169,12 @@ public class SiteRule implements Serializable {
     @ApiModelProperty(hidden = true)
     @JsonProperty(access = com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY)
     public Map<String, String> getAllHeaders() {
-        Map<String, String> map = new WeakHashMap<String, String>();
+        Map<String, String> map = new WeakHashMap<>();
         if (null != this.headers) {
-            this.headers.parallelStream().filter(t -> t != null).filter(t -> StringUtils.isNotBlank(t.getHeaderName()))
-                .forEach(t -> {
-                    map.put(t.getHeaderName(), t.getHeaderValue());
-                });
+            this.headers.parallelStream()
+                    .filter(Objects::nonNull)
+                    .filter(t -> StringUtils.isNotBlank(t.getHeaderName()))
+                    .forEach(t -> map.put(t.getHeaderName(), t.getHeaderValue()));
         }
         if (StringUtils.isNotBlank(this.userAgent)) {
             map.put(SiteConstant.USER_AGENT, this.userAgent);
@@ -197,9 +210,6 @@ public class SiteRule implements Serializable {
         if (this.interceptCount == null) {
             return false;
         }
-        if (this.interceptCount <= 0) {
-            return false;
-        }
-        return true;
+        return this.interceptCount > 0;
     }
 }

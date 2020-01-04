@@ -22,7 +22,7 @@ public class SimpleThreadFactory implements ThreadFactory {
     @Override
     public Thread newThread(Runnable r) {
         Thread thread = new Thread(r);
-        thread.setName(new StringBuffer(this.name).append(":").append(RandomUtils.nextInt()).toString());
+        thread.setName(this.name + ":" + RandomUtils.nextInt());
         return thread;
     }
 

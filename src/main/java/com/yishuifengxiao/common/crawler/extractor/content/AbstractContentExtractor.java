@@ -28,11 +28,10 @@ public abstract class AbstractContentExtractor implements ContentExtractor {
      * @return
      */
     protected List<FieldExtractRule> getFieldExtractRules() {
-        return contentRule.getRules().stream().map(t -> {
+        return contentRule.getRules().stream().peek(t -> {
             if (t.getSort() == null) {
                 t.setSort(0);
             }
-            return t;
         }).sorted(Comparator.comparing(FieldExtractRule::getSort)).collect(Collectors.toList());
     }
 

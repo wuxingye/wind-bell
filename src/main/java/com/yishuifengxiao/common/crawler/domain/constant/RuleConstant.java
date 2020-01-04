@@ -44,8 +44,7 @@ public final class RuleConstant {
     /**
      * 提取协议和域名
      */
-    public final static String REGEX_PROTOCOL_AND_HOST =
-        "http[s]?://[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\\.?";
+    public final static String REGEX_PROTOCOL_AND_HOST = "http[s]?://[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\\.?";
     /**
      * 提取域名
      */
@@ -57,8 +56,7 @@ public final class RuleConstant {
     /**
      * 非法表达式的匹配规则
      */
-    public final static String ILLEGAL_LINKS_SUFFIX =
-        ".+\\.((gif)|(png)|(css)|(js)|(jpg)|(jpeg)|(ico)|(svg)|(woff2)|(exe)|(zip))+";
+    public final static String ILLEGAL_LINKS_SUFFIX = ".+\\.((gif)|(png)|(css)|(js)|(jpg)|(jpeg)|(ico)|(svg)|(woff2)|(exe)|(zip))+";
     /**
      * 哈希链接地址的标志
      */

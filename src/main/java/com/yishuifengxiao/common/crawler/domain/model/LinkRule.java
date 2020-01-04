@@ -37,9 +37,13 @@ public class LinkRule implements Serializable {
     /**
      * 起始链接，多个起始链接之间用半角逗号隔开
      */
-    @ApiModelProperty("起始链接，多个起始链接之间用半角逗号隔开") @NotBlank(message = "起始链接不能为空") private String startUrl;
+    @ApiModelProperty("起始链接，多个起始链接之间用半角逗号隔开")
+    @NotBlank(message = "起始链接不能为空")
+    private String startUrl;
     /**
      * 链接的提取规则,正则表达式
      */
-    @ApiModelProperty("链接的提取规则,正则表达式") @NotEmpty(message = "请至少配置一个链接提取规则") private Set<String> rules;
+    @ApiModelProperty("链接的提取规则,正则表达式")
+    @NotEmpty(message = "请至少配置一个链接提取规则")
+    private Set<String> rules;
 }

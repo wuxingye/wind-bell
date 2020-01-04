@@ -34,9 +34,13 @@ public class ContentRule implements Serializable {
     /**
      * 内容页url的规则,即只有该规则的网页内容才会被提取,多个规则用半角逗号隔开
      */
-    @ApiModelProperty("内容页url的规则,即只有该规则的网页内容才会被提取,多个规则用半角逗号隔开") private String extractUrl;
+    @ApiModelProperty("内容页url的规则,即只有该规则的网页内容才会被提取,多个规则用半角逗号隔开")
+    private String extractUrl;
     /**
      * 风铃虫内容提取项
      */
-    @ApiModelProperty(" 风铃虫内容提取项的配置") @NotEmpty(message = "请至少配置一个内容提取项") @Valid private List<ContentItem> contents;
+    @ApiModelProperty(" 风铃虫内容提取项的配置")
+    @NotEmpty(message = "请至少配置一个内容提取项")
+    @Valid
+    private List<ContentItem> contents;
 }

@@ -4,7 +4,6 @@ import com.yishuifengxiao.common.crawler.domain.constant.SiteConstant;
 import com.yishuifengxiao.common.crawler.domain.entity.Page;
 import com.yishuifengxiao.common.crawler.domain.model.SiteRule;
 import com.yishuifengxiao.common.crawler.downloader.Downloader;
-import com.yishuifengxiao.common.tool.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
@@ -38,7 +37,7 @@ public class SimpleDownloader implements Downloader {
     private Map<String, String> cookies = null;
 
     @Override
-    public Page down(final SiteRule siteRule, final String url) throws ServiceException {
+    public Page down(final SiteRule siteRule, final String url) throws Exception {
         Page page = new Page(url);
         Response response = null;
         try {
@@ -66,10 +65,10 @@ public class SimpleDownloader implements Downloader {
      */
     private Response execute(SiteRule siteRule, String url) throws IOException {
         Connection connection =
-            this.connection(url, "get", siteRule.getConnectTimeout() < 0 ? 0 : siteRule.getConnectTimeout(),
-                siteRule.getAutoUserAgent(),
-                StringUtils.isNotBlank(siteRule.getReferrer()) ? siteRule.getReferrer() : url, siteRule.getAllHeaders(),
-                this.cookies);
+                this.connection(url, "get", siteRule.getConnectTimeout() < 0 ? 0 : siteRule.getConnectTimeout(),
+                        siteRule.getAutoUserAgent(),
+                        StringUtils.isNotBlank(siteRule.getReferrer()) ? siteRule.getReferrer() : url, siteRule.getAllHeaders(),
+                        this.cookies);
         Response response = connection.execute();
         // 替换cookie信息
         this.cookies = response.cookies();
@@ -89,7 +88,7 @@ public class SimpleDownloader implements Downloader {
      * @return 请求连接
      */
     private Connection connection(String url, String method, int timeOut, String userAgent, String referrer,
-        Map<String, String> headers, Map<String, String> cookies) {
+                                  Map<String, String> headers, Map<String, String> cookies) {
         Assert.notNull(url, "请求的url不能为空");
         // 如果是Https请求
         if (url.startsWith(SiteConstant.HTTPS)) {
@@ -157,7 +156,7 @@ public class SimpleDownloader implements Downloader {
                 }
             });
             SSLContext context = SSLContext.getInstance("TLS");
-            context.init(null, new X509TrustManager[] {new X509TrustManager() {
+            context.init(null, new X509TrustManager[]{new X509TrustManager() {
                 @Override
                 public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
                 }

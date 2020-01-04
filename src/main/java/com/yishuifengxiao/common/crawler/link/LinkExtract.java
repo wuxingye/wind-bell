@@ -1,7 +1,6 @@
 package com.yishuifengxiao.common.crawler.link;
 
 import com.yishuifengxiao.common.crawler.domain.entity.Page;
-import com.yishuifengxiao.common.tool.exception.ServiceException;
 
 /**
  * 链接解析器<br/>
@@ -17,7 +16,6 @@ public interface LinkExtract {
      * 提取出网页里所有的链接
      *
      * @param page
-     * @throws ServiceException
      */
-    void extract(final Page page) throws ServiceException;
+    void extract(final Page page);
 }

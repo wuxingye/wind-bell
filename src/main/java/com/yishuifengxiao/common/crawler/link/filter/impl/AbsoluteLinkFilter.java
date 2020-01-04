@@ -26,7 +26,7 @@ public class AbsoluteLinkFilter extends BaseLinkFilter {
             // 保证地址的形式为 / 开头，而不是//开头
             //提取出协议和域名
             String protocolAndHost = LinkUtils.extractProtocolAndHost(path);
-            return null == protocolAndHost ? null : new StringBuffer(protocolAndHost).append(url).toString();
+            return protocolAndHost == null ? null : protocolAndHost + url;
         }
         return next.handle(path, url);
     }

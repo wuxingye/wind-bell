@@ -35,7 +35,7 @@ public class RedisScheduler implements Scheduler {
 
     @Override
     public String poll() {
-        return (String)this.getOperation().pop();
+        return (String) this.getOperation().pop();
     }
 
     @Override

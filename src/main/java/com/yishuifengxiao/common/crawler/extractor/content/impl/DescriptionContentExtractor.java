@@ -13,14 +13,13 @@ import com.yishuifengxiao.common.crawler.extractor.content.strategy.StrategyFact
  * @version 1.0.0
  * @date 2019-11-14
  */
-public class DescpContentExtractor implements ContentExtractor {
+public class DescriptionContentExtractor implements ContentExtractor {
 
     private final static String XPATH_STR = "//meta[@name='description']/@content";
 
     @Override
     public Object extract(String rawText) {
-        String extract = StrategyFactory.get(Rule.XPATH).extract(rawText, XPATH_STR, "");
-        return extract;
+        return StrategyFactory.get(Rule.XPATH).extract(rawText, XPATH_STR, "");
     }
 
     @Override

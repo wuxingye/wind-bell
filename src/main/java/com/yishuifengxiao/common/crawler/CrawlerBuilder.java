@@ -140,8 +140,8 @@ public class CrawlerBuilder {
         }
         CrawlerBuilder crawlerBuilder = new CrawlerBuilder();
         crawlerBuilder.link(crawlerRule.getLink()).site(crawlerRule.getSite()).content(crawlerRule.getContent())
-            .interval(crawlerRule.getInterval()).waitTime(crawlerRule.getWaitTime())
-            .threadNum(crawlerRule.getThreadNum());
+                .interval(crawlerRule.getInterval()).waitTime(crawlerRule.getWaitTime())
+                .threadNum(crawlerRule.getThreadNum());
         return crawlerBuilder;
     }
 
@@ -223,10 +223,10 @@ public class CrawlerBuilder {
      */
     public SiteRule site() {
         return new SiteRule().setUserAgent(this.userAgent).setReferrer(this.referrer).setCacheControl(this.cacheControl)
-            .setCookieValue(this.cookieValue).setFailureMark(this.failureMark).setRetryCount(this.retryCount)
-            .setRedirectsEnabled(this.redirectsEnabled).setConnectTimeout(this.connectTimeout)
-            .setContentCompressionEnabled(this.contentCompressionEnabled).setMaxRedirects(this.maxRedirects)
-            .setInterceptCount(this.interceptCount).setHeaders(this.headers);
+                .setCookieValue(this.cookieValue).setFailureMark(this.failureMark).setRetryCount(this.retryCount)
+                .setRedirectsEnabled(this.redirectsEnabled).setConnectTimeout(this.connectTimeout)
+                .setContentCompressionEnabled(this.contentCompressionEnabled).setMaxRedirects(this.maxRedirects)
+                .setInterceptCount(this.interceptCount).setHeaders(this.headers);
     }
 
     /**
@@ -676,7 +676,7 @@ public class CrawlerBuilder {
     public CrawlerBuilder addExtractItems(List<ContentItem> list) {
         if (null != list) {
             list.parallelStream().filter(t -> null != t && StringUtils.isNotBlank(t.getFiledName()))
-                .forEach(this::addExtractItem);
+                    .forEach(this::addExtractItem);
         }
         return this;
     }
@@ -722,7 +722,7 @@ public class CrawlerBuilder {
     /**
      * 根据内容提取项的代码获取该内容提取项的提取规则
      *
-     * @param contentItemName 内容提取项的代码
+     * @param key 内容提取项的代码
      * @return 该内容提取项的提取规则
      */
     public List<FieldExtractRule> extractRule(String key) {
@@ -832,7 +832,7 @@ public class CrawlerBuilder {
             this.addLinkRule(RuleConstant.ANT_MATCH_ALL);
         } else {
             this.linkRules = this.linkRules.parallelStream().filter(t -> null != t).map(t -> pattern(startUrl, t))
-                .collect(Collectors.toSet());
+                    .collect(Collectors.toSet());
         }
         // 检查内容页规则
         if (StringUtils.isBlank(this.extractUrl)) {
@@ -840,11 +840,11 @@ public class CrawlerBuilder {
         }
         // 检查提取项数据
         List<ContentItem> contentItems = this.extractItems().parallelStream().filter(t -> null != t)
-            .filter(t -> StringUtils.isNotBlank(t.getFiledName()))
-            .filter(t -> null != t.getRules() && t.getRules().size() > 0).collect(Collectors.toList());
+                .filter(t -> StringUtils.isNotBlank(t.getFiledName()))
+                .filter(t -> null != t.getRules() && t.getRules().size() > 0).collect(Collectors.toList());
         this.setExtractItems(contentItems);
         CrawlerRule crawlerRule =
-            new CrawlerRule(this.interval, this.waitTime, this.threadNum, this.site(), this.link(), this.content());
+                new CrawlerRule(this.interval, this.waitTime, this.threadNum, this.site(), this.link(), this.content());
         return crawlerRule;
     }
 

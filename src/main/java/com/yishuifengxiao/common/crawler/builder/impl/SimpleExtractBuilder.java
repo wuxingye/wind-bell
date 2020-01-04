@@ -9,7 +9,7 @@ import com.yishuifengxiao.common.crawler.domain.model.LinkRule;
 import com.yishuifengxiao.common.crawler.extractor.ExtractorFactory;
 import com.yishuifengxiao.common.crawler.extractor.content.ContentExtractor;
 import com.yishuifengxiao.common.crawler.extractor.content.impl.CharsetContentExtractor;
-import com.yishuifengxiao.common.crawler.extractor.content.impl.DescpContentExtractor;
+import com.yishuifengxiao.common.crawler.extractor.content.impl.DescriptionContentExtractor;
 import com.yishuifengxiao.common.crawler.extractor.content.impl.KeywordContentExtractor;
 import com.yishuifengxiao.common.crawler.extractor.content.impl.TitleContentExtractor;
 import com.yishuifengxiao.common.crawler.extractor.links.LinkExtractor;
@@ -19,7 +19,6 @@ import com.yishuifengxiao.common.crawler.link.LinkExtractProxy;
 import com.yishuifengxiao.common.crawler.link.filter.BaseLinkFilter;
 import com.yishuifengxiao.common.crawler.link.filter.impl.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,7 +50,7 @@ public class SimpleExtractBuilder implements ExtractBuilder {
         // 获取所有的链接提取器
         // 获取到所有的提取规则
         List<LinkExtractor> linkExtractors =
-            link.getRules().parallelStream().map(t -> factory.getLinkExtractor(t)).collect(Collectors.toList());
+                link.getRules().parallelStream().map(t -> factory.getLinkExtractor(t)).collect(Collectors.toList());
         // 生成链接解析器
         return new LinkExtractDecorator(linkExtractProxy, linkExtract, this.linkFilter, linkExtractors);
     }
@@ -62,7 +61,7 @@ public class SimpleExtractBuilder implements ExtractBuilder {
         List<ContentExtractor> contentExtractors = this.buildAllContentExtractor(content);
         // 构建一个内容解析器
         ContentExtract simpleContentExtract =
-            contentExtract != null ? contentExtract : new SimpleContentExtract(contentExtractors);
+                contentExtract != null ? contentExtract : new SimpleContentExtract(contentExtractors);
         // 构建一个内容解析装饰器
         return new SimpleContentExtractDecorator(content.getExtractUrl(), simpleContentExtract);
     }
@@ -75,12 +74,10 @@ public class SimpleExtractBuilder implements ExtractBuilder {
      */
     private List<ContentExtractor> buildContentExtractor(ContentRule content) {
         //@formatter:off
-        List<ContentExtractor> contentExtractors = new ArrayList<>();
-        contentExtractors = content.getContents().parallelStream()
+        //@formatter:on
+        return content.getContents().parallelStream()
                 .map(t -> factory.getContentExtractor(t))
                 .collect(Collectors.toList());
-        //@formatter:on
-        return contentExtractors;
     }
 
     /**
@@ -89,8 +86,8 @@ public class SimpleExtractBuilder implements ExtractBuilder {
      * @return
      */
     private List<ContentExtractor> buildCommonExtractor() {
-        return Arrays.asList(new DescpContentExtractor(), new KeywordContentExtractor(), new TitleContentExtractor(),
-            new CharsetContentExtractor());
+        return Arrays.asList(new DescriptionContentExtractor(), new KeywordContentExtractor(), new TitleContentExtractor(),
+                new CharsetContentExtractor());
     }
 
     /**
@@ -116,7 +113,6 @@ public class SimpleExtractBuilder implements ExtractBuilder {
         AbsoluteLinkFilter absoluteLinkFilter = new AbsoluteLinkFilter(hashLinkFilter);
         HttpLinkFilter httpLinkFilter = new HttpLinkFilter(absoluteLinkFilter);
         ShortLinkFilter shortLinkFilter = new ShortLinkFilter(httpLinkFilter);
-        IllegalLinkFilter illegalLinkFilter = new IllegalLinkFilter(shortLinkFilter);
-        return illegalLinkFilter;
+        return new IllegalLinkFilter(shortLinkFilter);
     }
 }

@@ -3,13 +3,9 @@ package com.yishuifengxiao.common.crawler.link;
 import com.yishuifengxiao.common.crawler.domain.entity.Page;
 import com.yishuifengxiao.common.crawler.extractor.links.LinkExtractor;
 import com.yishuifengxiao.common.crawler.link.filter.BaseLinkFilter;
-import com.yishuifengxiao.common.tool.exception.ServiceException;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -38,8 +34,10 @@ public class LinkExtractDecorator implements LinkExtract {
      */
     private List<LinkExtractor> linkExtractors;
 
-    public LinkExtractDecorator(LinkExtract linkExtractProxy, LinkExtract linkExtract, BaseLinkFilter linkFilter,
-        List<LinkExtractor> linkExtractors) {
+    public LinkExtractDecorator(LinkExtract linkExtractProxy,
+                                LinkExtract linkExtract,
+                                BaseLinkFilter linkFilter,
+                                List<LinkExtractor> linkExtractors) {
         this.linkExtractProxy = linkExtractProxy;
         this.linkExtract = linkExtract;
         this.linkFilter = linkFilter;
@@ -47,7 +45,7 @@ public class LinkExtractDecorator implements LinkExtract {
     }
 
     @Override
-    public void extract(final Page page) throws ServiceException {
+    public void extract(final Page page) {
         //@formatter:off
         // 调用实际处理类对信息进行处理
         this.linkExtractProxy.extract(page);
@@ -56,7 +54,7 @@ public class LinkExtractDecorator implements LinkExtract {
             this.linkExtract.extract(page);
         }
         //将提取出来的链接根据链接提取规则过滤
-        List<String> urls = this.fliter(StringUtils.isNotBlank(page.getRedirectUrl()) ? page.getRedirectUrl() : page.getUrl(), new HashSet<>(page.getLinks()));
+        List<String> urls = this.filter(StringUtils.isNotBlank(page.getRedirectUrl()) ? page.getRedirectUrl() : page.getUrl(), new HashSet<>(page.getLinks()));
         page.setLinks(urls);
         //@formatter:on
     }
@@ -68,16 +66,22 @@ public class LinkExtractDecorator implements LinkExtract {
      * @param urls 从当前网页内容里提取出来的链接集合
      * @return
      */
-    private List<String> fliter(final String path, Set<String> urls) {
+    private List<String> filter(final String path, Set<String> urls) {
         //@formatter:off
         // 链接统一转换成网络地址形式
-        Set<String> links = urls.parallelStream().filter(t -> null != t)
-                .map(t -> linkFilter.handle(path, t.toLowerCase())).collect(Collectors.toSet());
+        Set<String> links = urls.parallelStream()
+                .filter(Objects::nonNull)
+                .map(t -> linkFilter.handle(path, t.toLowerCase()))
+                .collect(Collectors.toSet());
         urls.clear();
         // 再从转换后的地址里提取出所有符合要求的链接
-        linkExtractors.parallelStream().filter(t -> null != t).map(t -> t.extract(new ArrayList<>(links)))
+        linkExtractors.parallelStream()
+                .filter(Objects::nonNull)
+                .map(t -> t.extract(new ArrayList<>(links)))
                 .forEach(urls::addAll);
         //@formatter:on
-        return urls.parallelStream().filter(t -> StringUtils.isNotBlank(t)).collect(Collectors.toList());
+        return urls.parallelStream()
+                .filter(StringUtils::isNotBlank)
+                .collect(Collectors.toList());
     }
 }

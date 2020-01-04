@@ -11,9 +11,11 @@ import com.yishuifengxiao.common.crawler.downloader.impl.SimpleDownloader;
 import com.yishuifengxiao.common.crawler.link.LinkExtract;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
+import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,7 +32,7 @@ public class SimpleSimulator implements Simulator {
 
     @Override
     public SimulatorData extract(String url, SiteRule siteRule, ContentItem contentExtractRule, Downloader downloader) {
-        SimulatorData simulatorData = null;
+        SimulatorData simulatorData;
         try {
             ContentRule content = check(url, contentExtractRule);
             Page page = this.download(siteRule, url, downloader);
@@ -48,7 +50,7 @@ public class SimpleSimulator implements Simulator {
 
     @Override
     public SimulatorData link(SiteRule siteRule, LinkRule linkRule, Downloader downloader) {
-        SimulatorData simulatorData = null;
+        SimulatorData simulatorData;
         try {
             check(linkRule);
             Page page = this.download(siteRule, linkRule.getStartUrl(), downloader);
@@ -106,23 +108,15 @@ public class SimpleSimulator implements Simulator {
      * @throws Exception
      */
     private ContentRule check(String url, ContentItem contentExtractRule) throws Exception {
-        if (StringUtils.isBlank(url)) {
-            throw new Exception("测试网址不能为空");
-        }
-        if (contentExtractRule == null) {
-            throw new Exception("提取规则不能为空");
-        }
-        if (StringUtils.isBlank(contentExtractRule.getName()) || contentExtractRule.getRules() == null
-            || contentExtractRule.getRules().isEmpty()) {
-            throw new Exception("请配置正确的提取规则");
-        }
-        List<FieldExtractRule> rules = contentExtractRule.getRules().parallelStream().filter(t -> t.getRule() != null)
-            .collect(Collectors.toList());
-        if (rules == null || rules.isEmpty()) {
-            throw new Exception("请至少配置一个正确的提取规则");
-        }
+        Assert.hasText(url, "测试网址不能为空");
+        Assert.notNull(contentExtractRule, "提取规则不能为空");
+        Assert.isTrue(StringUtils.isNotBlank(contentExtractRule.getName())
+                && contentExtractRule.getRules() != null
+                && !CollectionUtils.isEmpty(contentExtractRule.getRules()), "请配置正确的提取规则");
+        List<FieldExtractRule> rules = contentExtractRule.getRules().parallelStream()
+                .filter(t -> t.getRule() != null).collect(Collectors.toList());
+        Assert.notEmpty(rules, "请至少配置一个正确的提取规则");
         contentExtractRule.setRules(rules);
-        ContentRule content = new ContentRule().setContents(Arrays.asList(contentExtractRule));
-        return content;
+        return new ContentRule().setContents(Collections.singletonList(contentExtractRule));
     }
 }

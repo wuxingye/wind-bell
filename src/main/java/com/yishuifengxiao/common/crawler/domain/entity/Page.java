@@ -1,5 +1,7 @@
 package com.yishuifengxiao.common.crawler.domain.entity;
 
+import lombok.Data;
+import lombok.experimental.Accessors;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.Assert;
 
@@ -16,6 +18,8 @@ import java.util.stream.Collectors;
  * @version 1.0.0
  * @date 2019年11月26日
  */
+@Data
+@Accessors(chain = true)
 public class Page {
 
     /**
@@ -51,61 +55,6 @@ public class Page {
         this.url = url;
     }
 
-    public Page() {
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public Page setCode(int code) {
-        this.code = code;
-        return this;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getRawTxt() {
-        return rawTxt;
-    }
-
-    public Page setRawTxt(String rawTxt) {
-        this.rawTxt = rawTxt;
-        return this;
-    }
-
-    public List<String> getLinks() {
-        return links;
-    }
-
-    /**
-     * 设置链接地址 <br/>
-     * 会替换原来的链接地址集合
-     *
-     * @param links
-     * @return
-     */
-    public Page setLinks(List<String> links) {
-        Assert.notNull(links, "目标链接集合不能为空");
-        this.links = links;
-        return this;
-    }
-
-    public boolean isSkip() {
-        return isSkip;
-    }
-
-    public Page setSkip(boolean isSkip) {
-        this.isSkip = isSkip;
-        return this;
-    }
-
     /**
      * 在原来的链接地址集合里增加新的链接信息
      *
@@ -117,7 +66,7 @@ public class Page {
         if (this.links == null) {
             this.links = new ArrayList<>();
         }
-        this.links.addAll(links.parallelStream().filter(t -> StringUtils.isNotBlank(t)).collect(Collectors.toSet()));
+        this.links.addAll(links.parallelStream().filter(StringUtils::isNotBlank).collect(Collectors.toSet()));
         return this;
     }
 
@@ -158,24 +107,6 @@ public class Page {
     }
 
     /**
-     * 获取具备重定向功能的下载器在请求时重定向之后的地址
-     *
-     * @return
-     */
-    public String getRedirectUrl() {
-        return redirectUrl;
-    }
-
-    /**
-     * 设置 具备重定向功能的下载器在请求时重定向之后的地址
-     *
-     * @param redirectUrl
-     */
-    public void setRedirectUrl(String redirectUrl) {
-        this.redirectUrl = redirectUrl;
-    }
-
-    /**
      * 增加输出数据
      *
      * @param key
@@ -196,9 +127,5 @@ public class Page {
     public boolean containResultItem(String key) {
         Assert.notNull(key, "输出结果的键值不能为空");
         return this.outData.containsKey(key);
-    }
-
-    public Map<String, Object> getAllResultItem() {
-        return this.outData;
     }
 }

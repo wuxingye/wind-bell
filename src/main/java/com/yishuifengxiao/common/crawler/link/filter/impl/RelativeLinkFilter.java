@@ -22,7 +22,7 @@ public class RelativeLinkFilter extends BaseLinkFilter {
     public String handle(BaseLinkFilter next, String path, String url) {
         if (!StringUtils.startsWithAny(url, RuleConstant.ABSOLUTE_ADDR_LINK, RuleConstant.NETWORK_ADDR_LINK)) {
             // 不是网络地址和绝对地址
-            StringBuffer sb = new StringBuffer(path);
+            StringBuilder sb = new StringBuilder(path);
             if (!StringUtils.endsWith(path, CrawlerConstant.LEFT_SALASH)) {
                 sb.append(CrawlerConstant.LEFT_SALASH);
             }

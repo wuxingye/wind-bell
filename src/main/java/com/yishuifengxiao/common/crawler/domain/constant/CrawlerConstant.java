@@ -16,7 +16,7 @@ public final class CrawlerConstant {
     /**
      * 所有请求的请求的集合
      */
-    public final static String REQUEST_HOSTORY = "REQUEST_HOSTORY_";
+    public final static String REQUEST_HISTORY = "REQUEST_HISTORY_";
     /**
      * 提取时出现多条数据拼接的标识符
      */

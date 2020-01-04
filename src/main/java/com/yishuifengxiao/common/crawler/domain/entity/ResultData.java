@@ -134,15 +134,6 @@ public class ResultData {
     }
 
     /**
-     * 获取全部的数据
-     *
-     * @return
-     */
-    public Map<String, Object> getAllData() {
-        return data;
-    }
-
-    /**
      * 判断是否存在某个键的数据
      *
      * @param key
